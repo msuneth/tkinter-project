@@ -18,10 +18,13 @@ def start_button_clicked():
     global rounds
     rounds += 1
     if rounds % 8 == 0:
+        timer_label.config(text="Break", fg=RED, bg=YELLOW, font=(FONT_NAME, 40))
         count_down(LONG_BREAK_MIN * 60)
     elif rounds % 2 == 0:
+        timer_label.config(text="Break", fg=PINK, bg=YELLOW, font=(FONT_NAME, 40))
         count_down(SHORT_BREAK_MIN * 60)
     else:
+        timer_label.config(text="Work", fg=GREEN, bg=YELLOW, font=(FONT_NAME, 40))
         count_down(WORK_MIN * 60)
     #count_down(SHORT_BREAK_MIN * 60)
     # count_down(WORK_MIN * 60)
