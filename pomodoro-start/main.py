@@ -60,10 +60,15 @@ def count_down(count):
         count_down_sec = f'0{count_down_sec}'
     canvas.itemconfig(timer_text, text=f"{count_down_min}:{count_down_sec}")
     if count > 0:
-        window.after(20, count_down, count - 1)
+        window.after(10, count_down, count - 1)
     else:
+        if rounds % 2 == 0:
+            number_of_checks = int(rounds / 2)
+            check_mark = ""
+            for _ in range(number_of_checks):
+                check_mark += "✔"
+            checkmark_label.config(text=check_mark, fg=GREEN, bg=YELLOW, font=(FONT_NAME, 20))
         start_button_clicked()
-
 
 
 # ---------------------------- UI SETUP ------------------------------- #
@@ -86,7 +91,7 @@ start_button.grid(row=2, column=0)
 reset_button = Button(text="Reset", command=reset_button_clicked)
 reset_button.grid(row=2, column=3)
 
-checkmark_label = Label(text="✔", fg=GREEN, bg=YELLOW, font=(FONT_NAME, 20))
+checkmark_label = Label(text="", fg=GREEN, bg=YELLOW, font=(FONT_NAME, 20))
 checkmark_label.grid(row=3, column=1)
 
 window.mainloop()
