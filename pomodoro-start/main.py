@@ -11,6 +11,7 @@ WORK_MIN = 25
 SHORT_BREAK_MIN = 5
 LONG_BREAK_MIN = 20
 rounds = 0
+timer = None
 
 
 # ---------------------------- TIMER RESET ------------------------------- #
@@ -44,7 +45,14 @@ def start_button_clicked():
 
 
 def reset_button_clicked():
-    pass
+    window.after_cancel(timer)
+    checkmark_label.config(text="", fg=GREEN, bg=YELLOW, font=(FONT_NAME, 20))
+    canvas.itemconfig(timer_text, text="00:00")
+    timer_label.config(text="Timer", fg=GREEN, bg=YELLOW, font=(FONT_NAME, 40))
+    global rounds
+    rounds = 0
+
+
 
 
 # ---------------------------- TIMER MECHANISM ------------------------------- # 
@@ -60,7 +68,8 @@ def count_down(count):
         count_down_sec = f'0{count_down_sec}'
     canvas.itemconfig(timer_text, text=f"{count_down_min}:{count_down_sec}")
     if count > 0:
-        window.after(10, count_down, count - 1)
+        global timer
+        timer = window.after(10, count_down, count - 1)
     else:
         if rounds % 2 == 0:
             number_of_checks = int(rounds / 2)
