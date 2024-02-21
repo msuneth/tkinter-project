@@ -11,7 +11,6 @@ my_label["text"] = "new text"
 my_label.config(text="new text2")
 my_label.config(padx=20,pady=20)
 
-
 def button_clicked():
     #my_label.config(text="button clicked")
     my_label.config(text=input_box.get())
