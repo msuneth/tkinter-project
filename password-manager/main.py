@@ -1,5 +1,6 @@
 import time
 from tkinter import *
+from tkinter import messagebox
 import math
 
 
@@ -14,13 +15,20 @@ def add_password_clicked():
     email_username = email_username_entry.get()
     password = password_entry.get()
 
-    with open("data.txt", "a") as file:
-        file.writelines(f"{website_name} | {email_username} | {password}\n")
-    status_label.config(text="Password data saved")
-    status_label.config(text="")
-    website_entry.delete(0, 'end')
-    password_entry.delete(0, 'end')
-    status_label.config(text="")
+    if len(website_name) == 0 or len(email_username) == 0 or len(password) == 0:
+        messagebox.showwarning("Empty Fields", message="Please fill all fields!")
+    else:
+        is_ok = messagebox.askokcancel(title=website_name, message=f"Please confirm to save below information\n"
+                                                                   f"Email/Username: {email_username}\n"
+                                                                   f"Password: {password}")
+        if is_ok:
+            with open("data.txt", "a") as file:
+                file.writelines(f"{website_name} | {email_username} | {password}\n")
+            status_label.config(text="Password data saved")
+            status_label.config(text="")
+            website_entry.delete(0, 'end')
+            password_entry.delete(0, 'end')
+            status_label.config(text="")
 
 
 # ---------------------------- UI SETUP ------------------------------- #
