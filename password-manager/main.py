@@ -2,6 +2,7 @@ import time
 from tkinter import *
 from tkinter import messagebox
 import random
+import pyperclip
 import math
 
 
@@ -35,13 +36,14 @@ def generate_password_clicked():
     random.shuffle(password_list)
 
     password = "".join(password_list)
+    pyperclip.copy(password)
 
     # for char in password_list:
     #     password += char
 
     print(f"Your password is: {password}")
     password_entry.delete(0, 'end')
-    password_entry.insert(0,password)
+    password_entry.insert(0, password)
 
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
