@@ -50,30 +50,24 @@ def generate_password_clicked():
 # ---------------------------- SEARCH WEBSITE ------------------------------- #
 def search_clicked():
     website_name = website_entry.get()
-    password = ""
-    email_username = ""
-
     if len(website_name) == 0:
         messagebox.showwarning("Website Empty", message="Please fill the website name!")
     else:
-        # is_ok = messagebox.askokcancel(title=website_name, message=f"Please confirm to save below information\n"
-        #                                                            f"Email/Username: {email_username}\n"
-        #                                                            f"Password: {password}")
-        # if is_ok:
         try:
             with open("data.json", "r") as file:
                 data = json.load(file)
-            email_username = data[website_name]["email_username"]
-            password = data[website_name]["password"]
         except FileNotFoundError:
             messagebox.showwarning(title="File not found", message="No Data File found")
             # with open("data.json", "w") as file:
             #     json.dump(new_data, file, indent=4)
-        except KeyError:
-            messagebox.showwarning(title="Data not found", message="No details for the website exists")
         else:
-            messagebox.showinfo(title=website_name, message=f"Email/Username: {email_username}\n"
-                                                            f"Password: {password}")
+            if website_name in data:
+                email_username = data[website_name]["email_username"]
+                password = data[website_name]["password"]
+                messagebox.showinfo(title=website_name, message=f"Email/Username: {email_username}\n"
+                                                                f"Password: {password}")
+            else:
+                messagebox.showwarning(title="Data not found", message="No details for the website exists")
             # with open("data.txt", "a") as file:
             #     file.writelines(f"{website_name} | {email_username} | {password}\n")
             # status_label.config(text="Password data saved")
