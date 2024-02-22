@@ -4,6 +4,7 @@ from tkinter import messagebox
 import random
 import pyperclip
 import math
+import json
 
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
@@ -52,6 +53,13 @@ def add_password_clicked():
     email_username = email_username_entry.get()
     password = password_entry.get()
 
+    new_data = {
+        website_name: {
+            "email_username": email_username,
+            "password": password,
+        }
+    }
+
     if len(website_name) == 0 or len(email_username) == 0 or len(password) == 0:
         messagebox.showwarning("Empty Fields", message="Please fill all fields!")
     else:
@@ -59,8 +67,18 @@ def add_password_clicked():
                                                                    f"Email/Username: {email_username}\n"
                                                                    f"Password: {password}")
         if is_ok:
-            with open("data.txt", "a") as file:
-                file.writelines(f"{website_name} | {email_username} | {password}\n")
+            try:
+                with open("data.json", "r") as file:
+                    data = json.load(file)
+            except FileNotFoundError:
+                with open("data.json", "w") as file:
+                    json.dump(new_data, file, indent=4)
+            else:
+                data.update(new_data)
+                with open("data.json", "w") as file:
+                    json.dump(data, file, indent=4)
+            # with open("data.txt", "a") as file:
+            #     file.writelines(f"{website_name} | {email_username} | {password}\n")
             status_label.config(text="Password data saved")
             status_label.config(text="")
             website_entry.delete(0, 'end')
