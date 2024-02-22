@@ -77,13 +77,14 @@ def add_password_clicked():
                 data.update(new_data)
                 with open("data.json", "w") as file:
                     json.dump(data, file, indent=4)
+            finally:
             # with open("data.txt", "a") as file:
             #     file.writelines(f"{website_name} | {email_username} | {password}\n")
-            status_label.config(text="Password data saved")
-            status_label.config(text="")
-            website_entry.delete(0, 'end')
-            password_entry.delete(0, 'end')
-            status_label.config(text="")
+                status_label.config(text="Password data saved")
+                status_label.config(text="")
+                website_entry.delete(0, 'end')
+                password_entry.delete(0, 'end')
+                status_label.config(text="")
 
 
 # ---------------------------- UI SETUP ------------------------------- #
