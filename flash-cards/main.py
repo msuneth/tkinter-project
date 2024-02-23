@@ -4,59 +4,57 @@ import random
 import pyperclip
 import math
 import json
+import pandas
 
 BACKGROUND_COLOR = "#B1DDC6"
 FONT_NAME = "Arial"
+FIRST_LANGUAGE = "French"
+
+
+def get_random_word() -> tuple:
+    df = pandas.read_csv("data/french_words.csv")
+    random_word_row = df.sample()
+    random_french_word = random_word_row["French"].squeeze()
+    random_english_word = random_word_row["English"].squeeze()
+    return random_french_word, random_english_word
+
+
+def display_random_word():
+    random_word = get_random_word()
+    canvas.itemconfig(canvas_image, image=card_front_img)
+    canvas.itemconfig(language_text, text="French",fill="black")
+    canvas.itemconfig(word_text, text=f"{random_word[0]}",fill="black")
+    #word_text = canvas.create_text(400, 263, text="", font=(FONT_NAME, 60, "bold"))
+    window.after(3000, display_english_word, random_word)
+
+
+def display_english_word(random_word: tuple):
+    canvas.itemconfig(canvas_image, image=card_back_img)
+    canvas.itemconfig(language_text, text="English",fill="white")
+    canvas.itemconfig(word_text, text=f"{random_word[1]}",fill="white")
+
 
 window = Tk()
 window.title("Flashy")
-window.config(padx=50, pady=50,bg=BACKGROUND_COLOR)
+window.config(padx=20, pady=20, bg=BACKGROUND_COLOR)
 
 canvas = Canvas(width=800, height=526, highlightthickness=0)
 card_front_img = PhotoImage(file="images/card_front.png")
-canvas.create_image(400, 263, image=card_front_img)
+card_back_img = PhotoImage(file="images/card_back.png")
+canvas_image = canvas.create_image(400, 263, image=card_front_img)
 canvas.config(background=BACKGROUND_COLOR)
-language_text = canvas.create_text(400, 150, text="French", font=(FONT_NAME, 40, "italic"))
-word_text = canvas.create_text(400, 263, text="trouve", font=(FONT_NAME, 60, "bold"))
-canvas.grid(row=0, column=0,columnspan=2)
+language_text = canvas.create_text(400, 150, text="", font=(FONT_NAME, 40, "italic"))
+word_text = canvas.create_text(400, 263, text="", font=(FONT_NAME, 60, "bold"))
+canvas.grid(row=0, column=0, columnspan=2)
 
 right_image = PhotoImage(file="images/right.png")
-right_button = Button(image=right_image, highlightthickness=0)
-right_button.grid(row=1,column=0)
+right_button = Button(image=right_image, highlightthickness=0,command=display_random_word)
+right_button.grid(row=1, column=0)
 
 wrong_image = PhotoImage(file="images/wrong.png")
-wrong_button = Button(image=wrong_image, highlightthickness=0)
-wrong_button.grid(row=1,column=1)
+wrong_button = Button(image=wrong_image, highlightthickness=0,command=display_random_word)
+wrong_button.grid(row=1, column=1)
 
-#
-# website_label = Label(text="Website:")
-# website_label.grid(row=1, column=0)
-# email_username_label = Label(text="Email/Username:")
-# email_username_label.grid(row=2, column=0)
-# password_label = Label(text="Password:")
-# password_label.grid(row=3, column=0)
-#
-# website_entry = Entry(width=32)
-# website_entry.grid(row=1, column=1)
-# website_entry.focus()
-# search_button = Button(text="Search",width=14, command=search_clicked)
-# search_button.grid(row=1, column=2)
-#
-# email_username_entry = Entry(width=50)
-# email_username_entry.grid(row=2, column=1, columnspan=2)
-# email_username_entry.insert(0, "msunethbit@gmail.com")
-# password_entry = Entry(width=32)
-# password_entry.grid(row=3, column=1)
-#
-# generate_password_button = Button(text="Generate Password", command=generate_password_clicked)
-# generate_password_button.grid(row=3, column=2)
-#
-# add_button = Button(text="Add", width=43, command=add_password_clicked)
-# add_button.grid(row=4, column=1, columnspan=2)
-#
-# status_label = Label(text="")
-# status_label.grid(row=5, column=1)
+display_random_word()
 
 window.mainloop()
-
-
